@@ -205,10 +205,12 @@ function mirago_social_icons_options(){ ?>
       <?php wp_nonce_field('update-options') ?>
       
       <?php //if($active_tab == 'aparencia') { ?>
+        <p>Para exibir os ícones, use o shortcode: [mirago_social_icons]</p>
+        <hr />
         <p><strong>Tipo de ícone:</strong>
           <select name="msi_icone_tipo" id="msi-icone-tipo" onchange="icone_tipo_selecionado();">
             <option value="0" <?php if (get_option('msi_icone_tipo') == 0) echo 'selected'; ?>>Padrão</option>
-            <option value="1" <?php if (get_option('msi_icone_tipo') == 1) echo 'selected'; ?>>Invertido (fundo branco)</option>
+            <option value="1" <?php if (get_option('msi_icone_tipo') == 1) echo 'selected'; ?>>Ícone colorido</option>
             <option value="2" <?php if (get_option('msi_icone_tipo') == 2) echo 'selected'; ?>>Cinza + Hover com cor padrão</option>
             <option value="3" <?php if (get_option('msi_icone_tipo') == 3) echo 'selected'; ?>>Preto</option>
             <option value="4" <?php if (get_option('msi_icone_tipo') == 4) echo 'selected'; ?>>Branco</option>
@@ -256,7 +258,7 @@ function mirago_social_icons_options(){ ?>
       <?php // } ?>
       <p><input type="submit" class="button button-primary" name="Submit" value="Salvar" /></p>
       <input type="hidden" name="action" value="update" />
-      <input type="hidden" name="page_options" value="msi_icone_tipo,msi_borda,msi_fundo,msi_facebook,msi_twitter,msi_linkedin,msi_youtube,msi_pinterest,msi_intagram,msi_vimeo,msi_googleplus" />
+      <input type="hidden" name="page_options" value="msi_icone_tipo,msi_borda,msi_fundo,msi_facebook,msi_twitter,msi_linkedin,msi_youtube,msi_pinterest,msi_instagram,msi_vimeo,msi_googleplus" />
     </form>
   </div>
 
