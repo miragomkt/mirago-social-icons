@@ -10,7 +10,7 @@
  */
 
 function mirago_social_enqueue_style() {
-	wp_enqueue_style( 'svg-social', plugin_dir_url( __FILE__ ) . 'css/social-svg.min.css' );
+	wp_enqueue_style( 'svg-social', plugin_dir_url( __FILE__ ) . 'css/social-svg.css' );
 }
 
 add_action( 'wp_enqueue_scripts', 'mirago_social_enqueue_style' );
@@ -24,76 +24,84 @@ add_action( 'admin_enqueue_scripts', 'mirago_social_enqueue_color_picker' );
 
 
 function mirago_social_show_icons(){
- 	$redes = array();
- 	if (get_option('msi_facebook')) { $redes['facebook'] = get_option('msi_facebook'); }
- 	if (get_option('msi_twitter')) { $redes['twitter'] = get_option('msi_twitter'); }
- 	if (get_option('msi_linkedin')) { $redes['linkedin'] = get_option('msi_linkedin'); }
+  $redes = array();
+  if (get_option('msi_facebook')) { $redes['facebook'] = get_option('msi_facebook'); }
+  if (get_option('msi_twitter')) { $redes['twitter'] = get_option('msi_twitter'); }
+  if (get_option('msi_instagram')) { $redes['instagram'] = get_option('msi_instagram'); }
+  if (get_option('msi_linkedin')) { $redes['linkedin'] = get_option('msi_linkedin'); }
   if (get_option('msi_youtube')) { $redes['youtube'] = get_option('msi_youtube'); }
- 	if (get_option('msi_pinterest')) { $redes['pinterest'] = get_option('msi_pinterest'); }
- 	if (get_option('msi_instagram')) { $redes['instagram'] = get_option('msi_instagram'); }
- 	if (get_option('msi_vimeo')) { $redes['vimeo'] = get_option('msi_vimeo'); }
- 	if (get_option('msi_googleplus')) { $redes['googleplus'] = get_option('msi_googleplus'); }
+  if (get_option('msi_pinterest')) { $redes['pinterest'] = get_option('msi_pinterest'); }
+  if (get_option('msi_vimeo')) { $redes['vimeo'] = get_option('msi_vimeo'); }
+  if (get_option('msi_googleplus')) { $redes['googleplus'] = get_option('msi_googleplus'); }
 
   if ($redes) {
-   	$url = plugin_dir_url( __FILE__ );
-   	$output = '<div class="social no-spin linear">';
-   	$output .='<ul>';
+  	$url = plugin_dir_url( __FILE__ );
+  	$output = '<div class="social no-spin linear">';
+  	$output .='<ul>';
 
-   	foreach ($redes as $key => $value) {
-   		if ($value != '' && !empty($value)) {
-	     	$output .= '<li class="'. $key . '">';
-	     	$output .= '<a href="'. $value . '" target="_blank">';
-	      $output .= '<div class="icon">';
-	      $output .= file_get_contents($url . "img/". $key . ".svg");
-	      $output .= '</div>';
-	      $output .= '<div class="circle">';
+  	foreach ($redes as $key => $value) {
+  		if ($value != '' && !empty($value)) {
+       	$output .= '<li class="'. $key . '">';
+       	$output .= '<a href="'. $value . '" target="_blank">';
+        $output .= '<div class="icon">';
+        $output .= file_get_contents($url . "img/". $key . ".svg");
+        $output .= '</div>';
+        $output .= '<div class="circle">';
         $output .= file_get_contents($url . "img/circle.svg");
-	      $output .= '</div>';
-	      $output .= '</a>';
-	      $output .= '</li>';
+        $output .= '</div>';
+        $output .= '</a>';
+        $output .= '</li>';
       }
-  	}
+    }
 
     $output .='</ul>';	
     $output .= '</div>';
     $output .= '<style>';
 
+    $icone_tamanho = get_option('msi_icone_tamanho');
+    if (!$icone_tamanho) {
+      update_option('msi_icone_tamanho', '32');
+    }
+
+    $output .= '.social ul li { height: ' . $icone_tamanho . 'px; width: '  . $icone_tamanho . 'px }';
+
     $cor_facebook = '#3b5998';
     $cor_twitter = '#55acee';
+    $cor_instagram = '#3f729b';
     $cor_linkedin = '#0077b5';
     $cor_youtube = '#cd201f';
     $cor_pinterest = '#cc2127';
-    $cor_instagram = '#3f729b';
     $cor_googleplus = '#dd4b39';
     $cor_vimeo = '#4bf';
 
+    
+
     if (get_option('msi_icone_tipo') == 3) {
-      $cor_facebook = $cor_twitter = $cor_linkedin = $cor_youtube = $cor_pinterest = $cor_instagram = $cor_googleplus = $cor_vimeo = '#000';
+      $cor_facebook = $cor_twitter = $cor_instagram = $cor_linkedin = $cor_youtube = $cor_pinterest = $cor_googleplus = $cor_vimeo = '#000';
     } elseif (get_option('msi_icone_tipo') == 4) {
-      $cor_facebook = $cor_twitter = $cor_linkedin = $cor_youtube = $cor_pinterest = $cor_instagram = $cor_googleplus = $cor_vimeo = '#fff';
+      $cor_facebook = $cor_twitter = $cor_instagram = $cor_linkedin = $cor_youtube = $cor_pinterest = $cor_googleplus = $cor_vimeo = '#fff';
     }
 
     $output .= '.social ul li a .icon svg, .social ul li a:hover .icon svg { z-index: 9999 !important } ';
     if (get_option('msi_icone_tipo') == 0 ) {
       
-
       $output .= '
       .social ul li.facebook a .circle svg { fill: ' . $cor_facebook . ' }
       .social ul li.twitter a .circle svg { fill: ' . $cor_twitter . ' }
+      .social ul li.instagram a .circle svg { fill: ' . $cor_instagram . ' }
       .social ul li.linkedin a .circle svg { fill: ' . $cor_linkedin . ' }
       .social ul li.youtube a .circle svg { fill: ' . $cor_youtube . ' }
       .social ul li.pinterest a .circle svg { fill: ' . $cor_pinterest . ' }
-      .social ul li.instagram a .circle svg { fill: ' . $cor_instagram . ' }
       .social ul li.googleplus a .circle svg { fill: ' . $cor_googleplus . ' }
       .social ul li.vimeo a .circle svg { fill: ' . $cor_vimeo . ' } 
       .social ul li a .icon svg { fill: #FFF }
 
       .social ul li.facebook a:hover .circle svg { fill: ' . $cor_facebook . ' }
       .social ul li.twitter a:hover .circle svg { fill: ' . $cor_twitter . ' }
+      .social ul li.instagram a:hover .circle svg { fill: ' . $cor_instagram . ' }
       .social ul li.linkedin a:hover .circle svg { fill: ' . $cor_linkedin . ' }
       .social ul li.youtube a:hover .circle svg { fill: ' . $cor_youtube . ' }
       .social ul li.pinterest a:hover .circle svg { fill: ' . $cor_pinterest . ' }
-      .social ul li.instagram a:hover .circle svg { fill: ' . $cor_instagram . ' }
       .social ul li.googleplus a:hover .circle svg { fill: ' . $cor_googleplus . ' }
       .social ul li.vimeo a:hover .circle svg { fill: ' . $cor_vimeo . ' } 
       .social ul li a:hover .icon svg { fill: #FFF }
@@ -107,10 +115,10 @@ function mirago_social_show_icons(){
       '
       .social ul li.facebook a:hover .icon svg { fill: ' . $cor_facebook . ' }
       .social ul li.twitter a:hover .icon svg { fill: ' . $cor_twitter . ' }
+      .social ul li.instagram a:hover .icon svg { fill: ' . $cor_instagram . ' }
       .social ul li.linkedin a:hover .icon svg { fill: ' . $cor_linkedin . ' }
       .social ul li.youtube a:hover .icon svg { fill: ' . $cor_youtube . ' }
       .social ul li.pinterest a:hover .icon svg { fill: ' . $cor_pinterest . ' }
-      .social ul li.instagram a:hover .icon svg { fill: ' . $cor_instagram . ' }
       .social ul li.googleplus a:hover .icon svg { fill: ' . $cor_googleplus . ' }
       .social ul li.vimeo a:hover .icon svg { fill: ' . $cor_vimeo . ' } 
       ';   
@@ -120,10 +128,10 @@ function mirago_social_show_icons(){
         '
         .social ul li.facebook a:hover .circle svg { stroke: ' . $cor_facebook . ' }
         .social ul li.twitter a:hover .circle svg { stroke: ' . $cor_twitter . ' }
+        .social ul li.instagram a:hover .circle svg { stroke: ' . $cor_instagram . ' }
         .social ul li.linkedin a:hover .circle svg { stroke: ' . $cor_linkedin . ' }
         .social ul li.youtube a:hover .circle svg { stroke: ' . $cor_youtube . ' }
         .social ul li.pinterest a:hover .circle svg { stroke: ' . $cor_pinterest . ' }
-        .social ul li.instagram a:hover .circle svg { stroke: ' . $cor_instagram . ' }
         .social ul li.googleplus a:hover .circle svg { stroke: ' . $cor_googleplus . ' }
         .social ul li.vimeo a:hover .circle svg { stroke: ' . $cor_vimeo . ' } 
         ';
@@ -138,10 +146,11 @@ function mirago_social_show_icons(){
       '
       .social ul li.facebook a .icon svg { fill: ' . $cor_facebook . ' }
       .social ul li.twitter a .icon svg { fill: ' . $cor_twitter . ' }
+      .social ul li.instagram a .icon svg { fill: ' . $cor_instagram . ' }
       .social ul li.linkedin a .icon svg { fill: ' . $cor_linkedin . ' }
       .social ul li.youtube a .icon svg { fill: ' . $cor_youtube . ' }
       .social ul li.pinterest a .icon svg { fill: ' . $cor_pinterest . ' }
-      .social ul li.instagram a .icon svg { fill: ' . $cor_instagram . ' }
+      
       .social ul li.googleplus a .icon svg { fill: ' . $cor_googleplus . ' }
       .social ul li.vimeo a .icon svg { fill: ' . $cor_vimeo . ' }  
       ';
@@ -151,10 +160,11 @@ function mirago_social_show_icons(){
         '
         .social ul li.facebook a .circle svg { stroke: ' . $cor_facebook . ' }
         .social ul li.twitter a .circle svg { stroke: ' . $cor_twitter . ' }
+        .social ul li.instagram a .circle svg { stroke: ' . $cor_instagram . ' }
         .social ul li.linkedin a .circle svg { stroke: ' . $cor_linkedin . ' }
         .social ul li.youtube a .circle svg { stroke: ' . $cor_youtube . ' }
         .social ul li.pinterest a .circle svg { stroke: ' . $cor_pinterest . ' }
-        .social ul li.instagram a .circle svg { stroke: ' . $cor_instagram . ' }
+        
         .social ul li.googleplus a .circle svg { stroke: ' . $cor_googleplus . ' }
         .social ul li.vimeo a .circle svg { stroke: ' . $cor_vimeo . ' }  
         ';
@@ -168,49 +178,51 @@ function mirago_social_show_icons(){
     $output .= '</style>';
 
     echo $output;
-  } else {
-   	return false;
+    } else {
+    	return false;
+    }
   }
- }
- 
- add_shortcode('mirago_social_icons', 'mirago_social_show_icons');
 
-
-add_action('admin_menu', 'mirago_social_icons_menu');
+  add_shortcode('mirago_social_icons', 'mirago_social_show_icons');
+  add_action('admin_menu', 'mirago_social_icons_menu');
 
 function mirago_social_icons_menu() {
-add_theme_page( 
-	'Mirago Social Icons', 
-	'Redes Sociais', 
-	'edit_theme_options', 
-	'mirago-social-icons',
-	'mirago_social_icons_options'
-);	
+  add_theme_page( 
+  	'Mirago Social Icons', 
+  	'Redes Sociais', 
+  	'edit_theme_options', 
+  	'mirago-social-icons',
+  	'mirago_social_icons_page'
+  );
 }
 
-function mirago_social_icons_options(){ ?>
+function mirago_social_icons_page(){ ?>
 	<div class="wrap">
     <?php
-      $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'url';
+      $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'links';
       if(isset($_GET['tab'])) $active_tab = $_GET['tab'];
     ?>
+    
+    <style>
+      .msi-info { background: #fbfbfb; border: 1px solid #e5e5e5; padding: 10px; margin: 10px 0px; }
+    </style>
 
-    <h2>Redes Sociais</h2>
-    <!-- <h2 class="nav-tab-wrapper">
-    <a href="?page=mirago-social-icons&tab=url" class="nav-tab <?php echo $active_tab == 'url' ? 'nav-tab-active' : ''; ?>">Redes Sociais</a>
+    <h2>Redes Sociais - Mirago Social Icons</h2>
+    <div class="msi-info">Para exibir os ícones, use o shortcode: <strong>[mirago_social_icons]</strong></div>
+
+    <h2 class="nav-tab-wrapper">
+    <a href="?page=mirago-social-icons&tab=links" class="nav-tab <?php echo $active_tab == 'links' ? 'nav-tab-active' : ''; ?>">Redes Sociais</a>
     <a href="?page=mirago-social-icons&tab=aparencia" class="nav-tab <?php echo $active_tab == 'aparencia' ? 'nav-tab-active' : ''; ?>">Aparência</a>
-    </h2> -->
+    </h2>
 
     <form method="post" action="options.php">
-      <?php wp_nonce_field('update-options') ?>
-      
-      <?php //if($active_tab == 'aparencia') { ?>
-        <p>Para exibir os ícones, use o shortcode: [mirago_social_icons]</p>
-        <hr />
+    <?php wp_nonce_field('update-options'); ?>
+    
+    <?php if($active_tab == 'aparencia') { ?>
         <p><strong>Tipo de ícone:</strong>
           <select name="msi_icone_tipo" id="msi-icone-tipo" onchange="icone_tipo_selecionado();">
             <option value="0" <?php if (get_option('msi_icone_tipo') == 0) echo 'selected'; ?>>Padrão</option>
-            <option value="1" <?php if (get_option('msi_icone_tipo') == 1) echo 'selected'; ?>>Ícone colorido</option>
+            <option value="1" <?php if (get_option('msi_icone_tipo') == 1) echo 'selected'; ?>>Ícone padrão + fundo personalizado</option>
             <option value="2" <?php if (get_option('msi_icone_tipo') == 2) echo 'selected'; ?>>Cinza + Hover com cor padrão</option>
             <option value="3" <?php if (get_option('msi_icone_tipo') == 3) echo 'selected'; ?>>Preto</option>
             <option value="4" <?php if (get_option('msi_icone_tipo') == 4) echo 'selected'; ?>>Branco</option>
@@ -228,14 +240,24 @@ function mirago_social_icons_options(){ ?>
             <input type="text" name="msi_fundo" id="msi-fundo" class="color-field" value="<?php echo get_option('msi_fundo'); ?>" >
           </p>
         </div>
-      <?php // } ?>
-      <hr />
-      <?php // if($active_tab == 'url') { ?>
+
+        <p><strong>Altura e largura do ícone em px:</strong>
+        <input type="number" name="msi_icone_tamanho" min="32" value="<?php echo get_option('msi_icone_tamanho') ?>"/> (mínimo 32px)
+
+        <p><input type="submit" class="button button-primary" name="Submit" value="Salvar alterações" /></p>
+        <input type="hidden" name="action" value="update" />
+        <input type="hidden" name="page_options" value="msi_icone_tipo, msi_borda, msi_fundo, msi_icone_tamanho" />
+      <?php } ?>
+
+      <?php if($active_tab == 'links') { ?>
         <p><strong>Facebook:</strong><br />
           <input type="text" name="msi_facebook" size="45" value="<?php echo get_option('msi_facebook'); ?>" />
         </p>
         <p><strong>Twitter:</strong><br />
           <input type="text" name="msi_twitter" size="45" value="<?php echo get_option('msi_twitter'); ?>" />
+        </p>
+        <p><strong>Instagram:</strong><br />
+          <input type="text" name="msi_instagram" size="45" value="<?php echo get_option('msi_instagram'); ?>" />
         </p>
         <p><strong>Linkedin:</strong><br />
           <input type="text" name="msi_linkedin" size="45" value="<?php echo get_option('msi_linkedin'); ?>" />
@@ -246,20 +268,37 @@ function mirago_social_icons_options(){ ?>
         <p><strong>Pinterest:</strong><br />
           <input type="text" name="msi_pinterest" size="45" value="<?php echo get_option('msi_pinterest'); ?>" />
         </p>
-        <p><strong>Instagram:</strong><br />
-          <input type="text" name="msi_instagram" size="45" value="<?php echo get_option('msi_instagram'); ?>" />
-        </p>
         <p><strong>Google Plus:</strong><br />
           <input type="text" name="msi_googleplus" size="45" value="<?php echo get_option('msi_googleplus'); ?>" />
         </p>
         <p><strong>Vimeo:</strong><br />
           <input type="text" name="msi_vimeo" size="45" value="<?php echo get_option('msi_vimeo'); ?>" />
         </p>
-      <?php // } ?>
-      <p><input type="submit" class="button button-primary" name="Submit" value="Salvar" /></p>
-      <input type="hidden" name="action" value="update" />
-      <input type="hidden" name="page_options" value="msi_icone_tipo,msi_borda,msi_fundo,msi_facebook,msi_twitter,msi_linkedin,msi_youtube,msi_pinterest,msi_instagram,msi_vimeo,msi_googleplus" />
+        
+        <p><input type="submit" class="button button-primary" name="Submit" value="Salvar alterações" /></p>
+        <input type="hidden" name="action" value="update" />
+        <input type="hidden" name="page_options" value="msi_facebook, msi_twitter, msi_linkedin, msi_youtube, msi_pinterest, msi_instagram, msi_vimeo, msi_googleplus" />
+
+      <?php } ?>
     </form>
   </div>
+<?php }
 
-<?php } ?>
+class mirago_social_icons_widget extends WP_Widget {
+  function __construct() {
+    parent::__construct( 
+      false, 
+      'Mirago Social Icons', 
+      array (
+        'description' => __( 'Exibe os ícones das redes sociais.')
+        ) 
+      );
+  }
+  function widget() {
+    do_shortcode('[mirago_social_icons]' );
+  }
+}
+
+add_action( 'widgets_init', function(){
+     register_widget( 'mirago_social_icons_widget' );
+});
