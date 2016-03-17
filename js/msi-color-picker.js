@@ -1,5 +1,5 @@
 jQuery(document).ready(function($){
-	$('.color-field').wpColorPicker();
+	jQuery('.color-field').wpColorPicker();
 	icone_tipo_selecionado();
 });
 
