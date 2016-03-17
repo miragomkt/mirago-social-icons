@@ -1,3 +1,4 @@
+$.noConflict();
 jQuery(document).ready(function($){
 	jQuery('.color-field').wpColorPicker();
 	icone_tipo_selecionado();
